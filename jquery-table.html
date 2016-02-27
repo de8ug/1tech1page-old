@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>table-charm-edit-day15</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="table.css" rel="stylesheet">
+</head>
+<body>
+    <!-- edit button  -->
+    <div class="bt">
+        <input type="button" onclick="checkAll()"  value="全选" />
+        <input type="button" onclick="checkCancel()"  value="取消" />
+        <input type="button" onclick="checkReverse()"  value="反选" />    
+        <input type="button" onclick="edit(this)"  name="edit", state="unClicked" value="进入编辑状态" />
+        <input type="button" onclick="addRow()" value="添加" />
+        <input type="button" onclick="delRow()" value="删除" />
+    </div>
+    <!-- table -->
+    <table border="1">
+        <thead>           
+             <tr>
+                <th>选择</th>
+                <th>序号</th>
+                <th>主机</th>
+                <th>端口</th>
+                <th>状态</th>
+                <th>启动时间</th>
+            </tr>
+        </thead>
+        <tbody id="tb">
+
+            <tr>
+                <td><input type="checkbox" onclick=""></td>
+                <td class="edit">1</td>
+                <td class="edit">1.2.3.4</td>
+                <td class="edit">22</td>
+                <td class="select">
+                        <select name="状态">
+                        <option value="运行">运行</option>
+                        <option value="停止">停止</option>
+                        <option value="重启中" selected="selected">重启中</option>
+                </td>
+                <td><input type="datetime-local" id="myLocalDate" value="2015-06-01T10:55:33"></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" onclick=""></td>
+                <td class="edit">2</td>
+                <td class="edit">2.2.2.2</td>
+                <td class="edit">33</td>
+                 <td class="select">
+                        <select name="状态">
+                        <option value="运行" selected="selected">运行</option>
+                        <option value="停止">停止</option>
+                        <option value="重启中">重启中</option>
+                </td>
+                <td><input type="datetime-local" id="myLocalDate" value="2016-02-01T11:11:33"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="jquery-1.8.2.min.js"></script>
+    <script src="table.js"></script>
+    <script>
+        //  selected all
+        function checkAll(){
+
+            $("#tb").find(':checkbox').prop("checked", true);
+        }
+        // cancel all
+        function checkCancel(){
+            $('#tb').find(":checkbox").each(function(){
+
+           // 这里指的是第一个td里的checkbox，需要父辈才是td，再根据edit找需要编辑的td
+            if ($(this).prop('checked')) {
+                var tdValue = $(this).parent().siblings(".edit");
+                console.log(tdValue.length);
+                $.each(tdValue, function(i){
+                    var td = tdValue[i];
+                    console.log(td);
+                    // 取消时候也要退出编辑状态
+                    var v = $(td).children(':text').val();
+                    console.log(v);
+                    $(td).html(v);
+                });
+            }
+                });
+            $("#tb").find(':checkbox').prop("checked", false);
+
+                    // change edit button style
+           $(this).parent().find(':button[name"edit"]').attr({state:"unClicked"});
+           $(this).parent().find(':button[name="edit"]').css({"background-color": "gray"});
+        }
+        // reverse selected
+        function checkReverse(){
+            // 使用each循环每一个checkbox是否选择，然后true或者false的属性取反赋值给自己
+            $("#tb").find(':checkbox').each(function(){
+                $(this).prop("checked", !$(this).prop("checked"));
+            })
+        }
+        //edit the checked line or lines
+        function edit(ths){
+            var attr = $(ths).attr("state");
+            console.log(attr);
+            if(attr === "unClicked")
+            {
+               $(ths).attr({state:"clicked"});
+               $(ths).css({"background-color": "yellow"});
+
+            }
+            else
+            {
+               $(ths).attr({state:"unClicked"});
+               $(ths).css({"background-color": "gray"});
+            }
+            console.log($(ths).attr("state"));
+
+            $('#tb').find(":checkbox").each(function(){
+                // find checked, then find next 3 td, make to input label
+                console.log($(this).prop('checked'));
+                // 这里指的是第一个td里的checkbox，需要父辈才是td，再根据edit找需要编辑的td
+                if ($(this).prop('checked')) {
+                    var tdValue = $(this).parent().siblings(".edit");
+                    console.log(tdValue.length);
+                    $.each(tdValue, function(i){
+                        var td = tdValue[i];
+                        console.log(td);
+
+                        // 第二次点击编辑按钮时，如果已经改成input，需要返回
+                        console.log($(td).children(':text').val());
+                       if($(td).children(':text').val()){return;}
+                        var v = $(td).html();
+                        console.log(v);
+                    // 注意引号的包裹
+                    var input_v = '<input type="text" value="'+v+'">';
+                    $(td).html(input_v);
+                    });
+                    // 获取table1,第2个tr的第2个td的值。=2
+                    // var v = $('#tb tr:eq(1) td:nth-child(2)').html();
+                    // console.log(v);
+                    // // 注意引号的包裹
+                    // var input_v = '<input type="text" value="'+v+'">';
+                    // $('#tb tr:eq(1) td:nth-child(2)').html(input_v);
+                }
+
+            });
+        }
+
+
+        // add row
+        function addRow(){
+            //行号是从0开始， 故减去1
+            var rownum=$("#tb tr").length-1;
+            var chk="<input type='checkbox' id='chk_"+rownum+"' name='chk_"+rownum+"'/>";
+            var text="<input type='text' id='txt_"+rownum+"' name='txt_"+rownum+"' width='75px'/>";
+            var sel="<select id='sel_"+rownum+"'><option value='1'>停止</option><option value='0'>启动</option></select>";
+            var row="<tr><td>"+chk+"</td><td>"+text+"</td><td>"+text+"</td><td>"+text+"</td><td>"+sel+"</td><td>"+text+"</td></tr>";
+            $(row).insertAfter($("#tb tr:eq("+rownum+")"));   
+        }  
+
+        // del row
+        function delRow(){
+             $("#tb tr").each(function(i){
+                 var chk=$(this).find("input[type='checkbox']");
+                 if(chk.prop("checked")){
+                    console.log('find del line');
+                   $(this).remove();
+                 }
+              });
+          }
+       
+    </script>
+</body>
+</html>
