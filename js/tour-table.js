@@ -50,7 +50,7 @@ $(function() {
                         "bgcolor"   : "black",
                         "color"     : "white",
                         "text"      : "添加几个简单的按钮，请查看源码，注意onclick函数和自定义的属性",
-                        "position"  : "TL",
+                        "position"  : "BL",
                         "time"      : 5000
                     },
                     {
