@@ -17,8 +17,8 @@ Released   : 20130920
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
-<link href="default.css" rel="stylesheet" type="text/css" media="all" />
-<link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/fonts.css" rel="stylesheet" type="text/css" media="all" />
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
     
@@ -42,57 +42,73 @@ Released   : 20130920
 <div id="page" class="container">
 	<div id="content">
 		<div class="title">
-			<h2>欢迎您的到来！</h2>
-			<span class="byline">用每个网页讲述一种技术</span> </div>
+			<h2>目标</h2>
+			<span class="byline">用每个网页讲述一种技术</span>
+			<p>using one tech make one page to practice html, css and javascript skills, with detail descriptions.</p>
+		 </div>
 		<a href="#" class="image image-full"><img src="images/pic01.jpg" alt="" /></a>
 		<p>
 
-		</p>
+					</p>
 		<div id="onecolumn">
-			<div class="title">
-				<h2>计划</h2>
+			<div class="title showTest">
+				<h2>说明</h2>
+				<div class="imgtext">
+					<p>每一页结合实例，采用下一步指引的方式完成一个案例。</p>
+				</div>
 			</div>
-			<p>每一页的左侧为说明，右侧为实例</p>
 		</div>
 	</div>
 	<div id="sidebar">
 		<ul class="style1">
 			<li class="first">
-				<h3>jquery-table</h3>
-				<p><a href="http://github.howie.wang/1tech1page/jquery-table-blog.html">I|->详细说明.</a> 
+				<h3>今日更新</h3>
+				<p><a class="show-mode" href="jquery-table-tour.html">I|->详细说明.</a> 
 				</p>
 			</li>
 			<li>
 				<h3>演示效果</h3>
-				<p><a href="http://github.howie.wang/1tech1page/jquery-table.html">I|->点击查看</a> </p>
+				<p><a class="show-mode"  href="jquery-table.html">I|->点击查看</a> </p>
 			</li>
 		</ul>
-		<!-- <div id="stwo-col">
+		<div id="stwo-col">
 			<div class="sbox1">
-				<h2>Etiam rhoncus</h2>
+				<h2>python</h2>
 				<ul class="style2">
-					<li><a href="#">Semper quis egetmi dolore</a></li>
-					<li><a href="#">Quam turpis feugiat dolor</a></li>
-					<li><a href="#">Amet ornare hendrerit lectus</a></li>
-					<li><a href="#">Consequat lorem phasellus</a></li>
-					<li><a href="#">Amet turpis feugiat amet</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
 				</ul>
 			</div>
 			<div class="sbox2">
-				<h2>Integer gravida</h2>
+				<h2>web</h2>
 				<ul class="style2">
-					<li><a href="#">Semper quis egetmi dolore</a></li>
-					<li><a href="#">Quam turpis feugiat dolor</a></li>
-					<li><a href="#">Amet ornare hendrerit lectus</a></li>
-					<li><a href="#">Consequat lorem phasellus</a></li>
-					<li><a href="#">Amet turpis feugiat amet</a></li>
+					<li><a href="jquery-table.html">jquery-table</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
+					<li><a href="#">ready</a></li>
+
 				</ul>
 			</div>
-		</div> -->
+		</div>
 	</div>
 </div>
 <div id="copyright">
 	<p>&copy; 1tech1page. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
 </div>
+
+<script src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".imgtext").hide();
+        $(".showTest").hover(function() {
+            $(".imgtext", this).slideToggle(500);
+        });
+    });
+</script>
+
 </body>
 </html>

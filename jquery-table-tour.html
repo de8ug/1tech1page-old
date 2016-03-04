@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <title>1tech1page Tour with jQuery</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="Website Tour with jQuery" />
+        <meta name="keywords" content="tour, walkthrough, jquery, plugin, steps, explain, describe, take a tour"/>
+		<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/jquerytour.css" />
+		<link rel="stylesheet" href="css/code.css" />
+		<script src="js/cufon-yui.js" type="text/javascript"></script>
+		<script src="js/ChunkFive_400.font.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			Cufon.replace('h1',{ textShadow: '1px 1px #fff'});
+			Cufon.replace('h2',{ textShadow: '1px 1px #fff'});
+			Cufon.replace('.footer');
+		</script>
+    </head>
+    <body>
+		<div class="wrapper">
+			<h1>jquery-table</h1>
+			<h2 class=""> jQuery 操作html表格table的实例</h2>
+			<div class="content">
+				<p><strong>根据提示查看代码，动手就能实现！
+					</strong>
+				</p>
+				<div class="box left">
+					<h2 class="tour_1">参考</h2>
+					<p>先把参考链接写在前面吧，以示尊重！</p>
+					<p>http://www.php100.com/manual/jquery/</p>
+					<p>http://tool.oschina.net/apidocs/apidoc?api=jquery</p>
+					<p>http://www.cnblogs.com/lxblog/archive/2013/01/11/2856582.html</p>
+					<p>http://www.jb51.net/article/28074.htm</p>
+
+				</div>
+				<div class="box right">
+					<h2 class="tour_2">主要知识点</h2>
+				<ul>
+				<li>table的各种编辑</li>
+				<li>筛选某元素的兄弟姐妹</li>
+				<li>each循环</li>
+				<li>键盘与鼠标相应事件</li>
+				</ul>
+				</div>
+
+				<br />
+
+				<div class="clear">
+					<h2 class="tour_3">建立表格</h2>
+					<p><strong>建立表格</strong></p>
+					<p>简单的代码如下，内容部分可随意填写。</p>
+					<pre><code>&lt;table border="1"&gt;
+					        &lt;thead&gt;
+					            &lt;tr&gt;
+					                &lt;th&gt;选择&lt;/th&gt;
+					                &lt;th&gt;主机名&lt;/th&gt;
+					            &lt;/tr&gt;
+					        &lt;/thead&gt;
+
+					        &lt;tbody id="tb1"&gt;
+					            &lt;tr&gt;
+					                &lt;td&gt;&lt;input type="checkbox" /&gt;&lt;/td&gt;
+					                &lt;td edit="true"&gt;111 &lt;/td&gt;
+					            &lt;/tr&gt;
+					            &lt;tr&gt;
+					                &lt;td&gt;&lt;input type="checkbox" /&gt;&lt;/td&gt;
+					                &lt;td edit="true"&gt;v1&lt;/td&gt;
+					            &lt;/tr&gt;
+					            &lt;tr&gt;
+					                &lt;td&gt;&lt;input type="checkbox" /&gt;&lt;/td&gt;
+					                &lt;td edit="true"&gt;v1&lt;/td&gt;
+					            &lt;/tr&gt;
+					        &lt;/tbody&gt;
+					    &lt;/table&gt;
+					</code></pre>
+				</div>
+				<div class="">
+					<h2 class="tour_4">添加按钮</h2>
+					<p><strong>添加按钮</strong></p>
+					<p>注意onclick后面的相应函数可以暂时不加，按照后文操作，需要时候再添加更容易看见效果。</p>
+					<p><div style="padding: 20px">
+					        <input type="button" onclick="CheckAll('#edit_mode', '#tb1');" value="全选" />
+					        <input type="button" onclick="CheckReverse('#edit_mode', '#tb1');" value="反选" />
+					        <input type="button" onclick="CheckCancel('#edit_mode', '#tb1');" value="取消" />
+					        <a id="edit_mode" class="edit-mode" href="file://C:\我的坚果云\jsStudy\blog/javascript:void(0);"  onclick="EditMode(this, '#tb1');">进入编辑模式</a>
+					    </div></p>
+				</div>
+				
+				<div class="">
+					<h2 class="tour_5">选择与取消函数</h2>
+					<p>选择与取消函数</p>
+					<p>以全选为例，示例代码如下：  对应上文的中“全选”按钮的onclick函数。</p>
+						<pre><code>function CheckAll(mode, tb){
+						// 1、选中checkbox
+						// 2、如果已经进入编辑模式，让选中行进入编辑状态
+						// tb = #tb1
+						//$(tb) = $('#tb1')
+						$(tb).children().each(function(){
+						    // $(this) 表示循环过程中,每一个tr，每一行数据
+						    var tr = $(this);
+						    var isChecked = $(this).find(':checkbox').prop('checked');
+						    if(isChecked==true){
+						    }else{
+						        $(this).find(':checkbox').prop('checked',true);
+						        // 如果已经进入编辑模式，让选中行进入编辑状态
+						        var isEditMode = $(mode).hasClass('editing');
+						        if(isEditMode){
+						            // 当前行进入编辑状态
+						            RowIntoEditMode(tr);
+						        }
+						    }
+						});
+						}
+						</code></pre>
+				</div>
+				<div class="">
+					<h2 class="tour_6">编辑状态函数</h2>
+					<p>编辑状态函数</p>
+					<p>在第一次点击进入编辑状态时，按钮应该变色，并进入编辑状态；
+					再次点击时，退出编辑状态，并恢复原来的颜色。
+					这里的进入和退出编辑状态，单独各写了一个函数，请继续往下看。</p>
+					<pre><code>    function EditMode(ths, tb){
+					// ths =this,
+					var isEditing = $(ths).hasClass('editing');
+					if(isEditing){
+					    // 退出编辑模式
+					    $(ths).text('进入编辑模式');
+					    $(ths).removeClass('editing');
+					    $(tb).children().each(function(){
+					        var tr = $(this);
+					        if(tr.find(':checkbox').prop('checked')){
+					            // 当前行，推出编辑状态
+					            RowOutEditMode(tr);
+					        }
+					    });
+					}else{
+					    // 进入编辑模式
+					    $(ths).text('退出编辑模式');
+					    $(ths).addClass('editing');
+					    $(tb).children().each(function(){
+					        // $(this) 表示循环过程中,每一个tr，每一行数据
+					        var tr = $(this);
+					        var isChecked = $(this).find(':checkbox').prop('checked');
+					        if(isChecked==true){
+					            // 当前行进入编辑状态
+					            RowIntoEditMode(tr);
+					        }
+					    });
+					}
+					}
+					</code></pre>
+				</div>
+
+				<div class="">
+					<h2 class="tour_7"></h2>
+					<h2 id="_7">退出编辑模式</h2>
+					<p>这里我们循环tr的子元素，找到属性edit="true"的td，也就是找到正处于编辑状态的几个位置，可以理解为就是input的几个标签，然后
+					通过.val的方式得到值，并用text函数把值显示出来。</p>
+					<pre><code>function  RowOutEditMode(tr){
+					        tr.children('[edit="true"]').each(function(){
+					    // every td with edit =true
+					    var td = $(this);
+					    console.log(td.html());
+					    var v = td.children(':first').val();
+					    td.text(v);
+					});
+					}
+					</code></pre>
+				</div>
+
+				<div class="">
+					<h2 class="tour_8"></h2>
+					<h2 id="_8">进入编辑状态</h2>
+					<p>简单来说，就是先用text取到标签中的值，并使用html进行拼接，拼接出带有input的形式，最后用html函数，修改这个标签。
+					请查看源码，这个时候的select标签的处理稍微麻烦一些。通过自定义的属性值，进行查找与修改。</p>
+					<pre><code>function RowIntoEditMode(tr){
+					        tr.children().each(function(){
+					    var td = $(this);
+					    if (td.attr('edit') == 'true') {
+					        if(td.attr('edit-type') == "select"){
+					            var all_values = window[td.attr('global-key')];
+					            var select_val = td.attr('select_val');
+					            select_val = parseInt(select_val);
+					            var options = "";
+					            $.each(all_values, function(index, value){
+					                if(select_val == value.id){
+					                    options += "&lt;option selected='selected' &gt;" + value.text +   "&lt;/option&gt;";
+					                }else{
+					                    options += "&lt;option&gt;" + value.text + "&lt;/option&gt;";
+					                }
+					            });
+					                var temp = "&lt;select&gt;" + options + "&lt;/select&gt;";
+					                td.html(temp);
+					        }else{
+					        var text = td.text();
+					        console.log(text);
+					        var temp = "&lt;input type='text'  value='  "   +  text +" '  /&gt;  ";
+					        td.html(temp);   
+					    }
+					    }
+					});
+					}
+					</code></pre>
+				</div>
+
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="footer">
+			<a href="http://github.howie.wang/1tech1page/">back to the 1tech1page</a>
+		</div>
+
+		<!-- The JavaScript -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+        <script type="text/javascript" src="js/tour-table.js"></script>
+    </body>
+</html>

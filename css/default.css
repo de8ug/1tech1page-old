@@ -486,3 +486,9 @@
 	{
 		font-size: 1.8em;
 	}
+.show-mode{
+    background-color: #b3b3b3;
+    padding: 8px;
+    text-decoration: none;
+    color: white;
+}
